@@ -1,7 +1,15 @@
 const {getLastPrice} = require("../client");
+const {updateTargetPrice} = require("../client");
 
 exports.post = (req, res, next) => {
-    res.status(201).send('Rota POST!');
+   console.log("#########################")
+    var userID = req.body.userID;
+    var targetPrice = req.body.targetPrice;
+    var operation = req.body.Operation;
+    var stockID = req.body.stockID
+    updateTargetPrice(userID, targetPrice, operation, stockID)
+    res.end()
+
  };
   
  exports.put = (req, res, next) => {
@@ -15,10 +23,8 @@ exports.post = (req, res, next) => {
  };
   
  exports.get = (req, res, next) => {
-   console.log("##############")
     var lastPrice = getLastPrice()
-    console.log("###############"+lastPrice)
-    res.status(200).send(lastPrice);
+   res.status(200).send(lastPrice);
  };
   
  exports.getById = (req, res, next) => {

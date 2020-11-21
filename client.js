@@ -18,8 +18,11 @@ var stocks = {};
 var lastPrice = "sssssssssssssssss"
 
 function getLastPrice(){
-  console.log("#################################### " + stocks)
   return stocks
+}
+
+function updateTargetPrice(userID, targetPrice, operation, stockID){
+  client.join({ symbol: stockID, userID: userID}, res => {});
 }
 
 
@@ -28,7 +31,7 @@ grpc.credentials.createInsecure())
 
 
 function recieveUpdates() {
-    let channel = client.join({ symbol: "Apple", userID: 1});
+    let channel = client.join({ symbol: "a", userID: 1});
    
     channel.on("data", onData);
 
@@ -53,4 +56,4 @@ function recieveUpdates() {
 
 recieveUpdates();
 
-module.exports = {getLastPrice};
+module.exports = {getLastPrice, updateTargetPrice};

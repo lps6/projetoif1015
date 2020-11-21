@@ -5,6 +5,7 @@ const {getLastPrice} = require("../client");
 
 
 router.get('/', UsuarioController.get);
+router.post('/trackers', UsuarioController.post)
 
 
 module.exports = router
