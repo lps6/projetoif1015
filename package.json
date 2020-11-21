@@ -1,0 +1,18 @@
+{
+  "name": "kiev",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "@grpc/proto-loader": "^0.5.5",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "grpc": "^1.24.4",
+    "morgan": "~1.9.1",
+    "pubnub": "^4.29.9"
+  }
+}

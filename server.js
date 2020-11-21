@@ -37,6 +37,7 @@ function updatePrice(stock) {
     }
     for (var user in users){
         if (users[user].includes(stock)){
+            console.log(users[1].length)
             users[user][0].write(Price);
         }
     }
