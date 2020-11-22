@@ -1,0 +1,62 @@
+// Custom Fonts
+@import url("https://fonts.googleapis.com/css2?family=Cabin&display=swap");
+@font-face {
+  font-family: "DroidSans";
+  src: url("~@/assets/fonts/droidSans/DroidSans.ttf") format("truetype");
+}
+@font-face {
+  font-family: "DroidSansBolder";
+  src: url("~@/assets/fonts/droidSans/DroidSans-Bold.ttf") format("truetype");
+}
+
+// Global Variables
+$font-main: "DroidSans", sans-serif;
+$font-main-bolder: "DroidSansBolder", sans-serif;
+$font-secondary: "Cabin", sans-serif;
+$color-white: #ffffff;
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: $font-main;
+  color: #454b60;
+}
+
+p {
+  font-family: $font-secondary;
+  color: #454b60;
+  font-weight: 500;
+}
+
+.option-active-img {
+  background-image: url("~@/assets/images/Menu.png") !important;
+  background-position: 100%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 100%;
+  position: absolute;
+  right: 0;
+  height: 100px;
+  top: -19px;
+  // background-position: 0px -24px;
+  // background-repeat: no-repeat;
+  // background-size: 473px 116px;
+  // width: 468px;
+}
+@media screen and (min-width: 1264px) and (max-width: 1903px) {
+  .option-active-img {
+    background-image: url("~@/assets/images/Menu.png") !important;
+    background-position: 100%;
+    background-size: 100%;
+    //background-position: 0px -22px;
+    // background-size: 322px 102px;
+    // background-position: 0px -24px;
+    background-repeat: no-repeat;
+    // background-size: 322px 116px;
+    // width: 468px;
+    width: 100%;
+  }
+}
