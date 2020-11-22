@@ -5,23 +5,24 @@ const grpcObject = grpc.loadPackageDefinition(packageDef);
 const stockPackage = grpcObject.stockPackage;
 const PubNub = require("pubnub");
 
-const readline = require('readline');
-
- 
-var rl = readline.createInterface({
-  input: process.stdin,
-  output: process.stdout
-});
-
 var stocks = {};
 
-var lastPrice = "sssssssssssssssss"
+notifications = {}
 
 function getLastPrice(){
   return stocks
 }
 
+function notifyUser(){
+  
+}
+
 function updateTargetPrice(userID, targetPrice, operation, stockID){
+  if (stockID in notifications){
+    notifications[stockID+userID].push([targetPrice, operation]);
+}else{
+  notifications[stockID+userID] = [[targetPrice, operation]];
+}  
   client.join({ symbol: stockID, userID: userID}, res => {});
 }
 
@@ -31,14 +32,9 @@ grpc.credentials.createInsecure())
 
 
 function recieveUpdates() {
-    let channel = client.join({ symbol: "a", userID: 1});
+    let channel = client.join({userID: 1});
    
     channel.on("data", onData);
-
-    rl.on("line", function(text) {
-      client.join({ symbol: text, userID: 1}, res => {});
-    });
-   
   }
 
   function onData(stock) {

@@ -2,7 +2,6 @@ const {getLastPrice} = require("../client");
 const {updateTargetPrice} = require("../client");
 
 exports.post = (req, res, next) => {
-   console.log("#########################")
     var userID = req.body.userID;
     var targetPrice = req.body.targetPrice;
     var operation = req.body.Operation;

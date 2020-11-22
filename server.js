@@ -7,7 +7,7 @@ const PubNub = require("pubnub");
 
 var stocks = {};
 var historico = 5;
-let users = {};
+let users = {};// Dicionario do usuario. chave = id do usuario. Objeto = lista. posição 0 
 
 const server = new grpc.Server();
 server.bind("0.0.0.0:40000", grpc.ServerCredentials.createInsecure());
