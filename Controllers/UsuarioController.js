@@ -21,13 +21,17 @@ exports.eventHandler = (req, res, next) => {
     console.log(`*** Interval loop."`);
     // Creates sending data:
     data = JSON.stringify(notification);
-    console.log("#########" + data + "#########");
     // Note:
     // For avoidance of client's request timeout,
     // you should send a heartbeat data like ':\n\n' (means "comment") at least every 55 sec (30 sec for first time request)
     // even if you have no sending data:
-    if (typeof(data) == undefined) res.write(`:\n\n`);
-    else res.write(data);
+    if (data == undefined) {
+       res.write(`:\n\n`)
+      }
+    else{
+      console.log("#########" + data + "#########");
+       res.write(toString(data))
+    }
   }, 3000);
   // Note: Heatbeat for avoidance of client's request timeout of first time (30 sec)
   res.write(`:\n\n`);
