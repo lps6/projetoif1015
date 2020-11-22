@@ -105,32 +105,43 @@
         </v-col>
         <v-row class="content-wrapper">
           <v-col cols="7">
-            <QuestionRounded
-              text="NOME DA AÇÃO"
-              infoSize="70px"
-              placeholder="200"
-              bgColor="#FFFFFF"
-              textColor="#303767"
-              valueColor="#FFFFFF"
-            ></QuestionRounded>
-            <QuestionRounded
-              text="TIPO DE OPERAÇÃO"
-              class="mt-8"
-              infoSize="70px"
-              placeholder="200"
-              bgColor="#FFFFFF"
-              textColor="#303767"
-              valueColor="#FFFFFF"
-            ></QuestionRounded>
-            <QuestionRounded
-              text="VALOR NOTIFICADO"
-              class="mt-8"
-              infoSize="70px"
-              placeholder="200"
-              bgColor="#FFFFFF"
-              textColor="#303767"
-              valueColor="#FFFFFF"
-            ></QuestionRounded>
+            <v-form
+              v-model="BAFormValid"
+              ref="BAForm"
+              class="pl-3 pr-3 BAForm-style"
+            >
+              <h2 class="mb-4">Configure para receber notificação</h2>
+              <label class="label-text-style">Nome da Ação</label>
+              <v-select
+                v-model="stockName"
+                :items="stockList"
+                :rules="hasChoosen(stockName)"
+                placeholder="Selecione sua Ação"
+                class=".v-input__slot .v-label .v-text-field input pt-0 mt-0"
+                required
+              ></v-select>
+              <label class="label-text-style">Tipo de Operação</label>
+              <v-select
+                v-model="stockOperation"
+                :items="stockOperationList"
+                :rules="hasChoosen(stockOperation)"
+                placeholder="Selecione sua operação"
+                class=".v-input__slot .v-label .v-text-field input pt-0 mt-0"
+                required
+              ></v-select>
+              <label class="label-text-style">Valor da Ação</label>
+              <v-text-field
+                v-model="stockValue"
+                :rules="hasChoosen(stockValue)"
+                name="input-10-1"
+                outlined
+                dense
+                placeholder="200"
+                class=".v-input__slot .v-label .v-text-field input select-style"
+                type="number"
+              >
+              </v-text-field>
+            </v-form>
             <!--
             <InfoRounded
               text="VALOR EM AÇÕES"
@@ -181,10 +192,10 @@
 
               <div class="projecao-btn">
                 <RoundedBtn
-                  text="PROJETE SEUS RENDIMENTOS"
+                  text="Alertar"
                   colorBtn="rgba(255,255,255, 0.9)"
                   class="btn-style"
-                  @click="showProjecaoRendimentos()"
+                  @click="alertar()"
                 ></RoundedBtn>
               </div>
             </div>
@@ -208,8 +219,7 @@ import VueSlickCarousel from "vue-slick-carousel";
 import "vue-slick-carousel/dist/vue-slick-carousel.css";
 // optional style for arrows & dots
 import "vue-slick-carousel/dist/vue-slick-carousel-theme.css";
-import QuestionRounded from "@/components/acionista/QuestionRounded";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 import { Chart } from "highcharts-vue";
 
 export default {
@@ -217,7 +227,6 @@ export default {
   components: {
     SectionHeader,
     InfoRounded,
-    QuestionRounded,
     RoundedBtn,
     // eslint-disable-next-line vue/no-unused-components
     VueSlickCarousel,
@@ -225,7 +234,13 @@ export default {
   },
   data() {
     return {
+      BAFormValid: false,
       projecaoRendimentos: false,
+      stockName: null,
+      stockList: ["Google", "Elerium", "Apple", "Linen Cloth", "Besbin Gas"],
+      stockOperation: "",
+      stockOperationList: ["Compra", "Venda"],
+      stockValue: "",
       rendimentosMobile: {
         chart: {
           backgroundColor: "#232533",
@@ -462,14 +477,38 @@ export default {
   },
   methods: {
     ...mapMutations(["SET_EXPANDEDDRAWER"]),
+    ...mapActions(["sendNotification", "requestValues"]),
     clickHandler() {
       this.$emit("click");
     },
     getImage(image) {
       return image ? require(`@/assets/images/${image}`) : "";
     },
+    hasChoosen(input) {
+      if (input) {
+        return [true];
+      } else {
+        return ["Campo obrigatório!"];
+      }
+    },
     showProjecaoRendimentos() {
       this.$router.push({ name: "projecaoRendimentos" });
+    },
+    alertar: async function() {
+      this.$refs.BAForm.validate();
+      if (this.stockName && this.stockOperation && this.stockValue) {
+        const res = await this.sendNotification({
+          stockID: this.stockName,
+          targetPrice: this.stockValue,
+          operations: this.stockOperation
+        });
+        console.log(res);
+        if (res.status === 200) {
+          console.log("valores");
+          const values = await this.requestValues();
+          console.log(values);
+        }
+      }
     }
   }
 };

@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const url = "https://api.oig.capital";
+const url = "http://localhost:3000";
 
 const axiosInstance = axios.create({
   baseURL: url + "/"

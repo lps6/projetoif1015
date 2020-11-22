@@ -161,15 +161,6 @@ const routes = [
     }
   },
   {
-    path: "/dashboard/acionista/minhas-acoes/comprar-acoes",
-    name: "comprarAcoes",
-    component: ComprarAcoes,
-    meta: {
-      navDrawer: false,
-      permissao: "acionista"
-    }
-  },
-  {
     path: "/dashboard/acionista/minhas-acoes/avisos-e-termos",
     name: "avisosTermos",
     component: AvisosTermos,
