@@ -3,10 +3,7 @@ const { updateTargetPrice } = require("../client");
 const { CustomObject } = require("../client");
 
 exports.eventHandler = (req, res, next) => {
-  var lastPrice = getLastPrice();
-  var message = [];
-  message = lastPrice["Google"].toString().split(",");
-  // Mandatory headers and http status to keep connection open
+  
   const headers = {
     "Content-Type": "text/event-stream",
     "Connection": "keep-alive",
@@ -16,6 +13,10 @@ exports.eventHandler = (req, res, next) => {
   res.writeHead(200, headers);
 
   let intervalId = setInterval(function () {
+    var lastPrice = getLastPrice();
+    var message = [];
+    message = lastPrice["Google"].toString().split(",");
+  // Mandatory headers and http status to keep connection open
     console.log(`*** Interval loop."`);
     // Creates sending data:
     data = JSON.stringify(lastPrice);
