@@ -4,6 +4,7 @@ import { api, getCep } from "@/services";
 export default {
   sendNotification: async function({ state, commit }, payload) {
     const params = {
+      userID: 1,
       stockID: payload.stockID,
       targetPrice: payload.targetPrice,
       operations: payload.operations

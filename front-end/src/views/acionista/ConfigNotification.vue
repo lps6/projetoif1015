@@ -197,6 +197,12 @@
                   class="btn-style"
                   @click="alertar()"
                 ></RoundedBtn>
+                <RoundedBtn
+                  text="Atualizar Gráfico"
+                  colorBtn="rgba(255,255,255, 0.9)"
+                  class="btn-style mt-1"
+                  @click="alertar()"
+                ></RoundedBtn>
               </div>
             </div>
           </v-col>
@@ -559,7 +565,7 @@ export default {
 }
 .projecao-btn {
   position: absolute;
-  top: 225px;
+  top: 180px;
   left: 20px;
 }
 .projecao-btn-mobile {
