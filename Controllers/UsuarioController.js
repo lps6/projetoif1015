@@ -1,5 +1,39 @@
 const {getLastPrice} = require("../client");
 const {updateTargetPrice} = require("../client");
+const {CustomObject} = require('../client');
+
+exports.eventHandler = (req, res, next) => {
+   var lastPrice = getLastPrice()
+   var message = []
+   message = lastPrice['Google'].toString().split(",")
+   // Mandatory headers and http status to keep connection open
+  const headers = {
+   'Content-Type': 'text/event-stream',
+   'Connection': 'keep-alive',
+   'Cache-Control': 'no-cache',
+   'X-Accel-Buffering': 'no'
+ };
+   res.writeHead(200, headers);
+   
+   let intervalId = setInterval(function() {
+      console.log(`*** Interval loop."`);
+      // Creates sending data:
+      data = JSON.stringify(lastPrice);
+      console.log("#########" + data + "#########")
+      // Note: 
+      // For avoidance of client's request timeout, 
+      // you should send a heartbeat data like ':\n\n' (means "comment") at least every 55 sec (30 sec for first time request)
+      // even if you have no sending data:
+      if (!data)
+        res.write(`:\n\n`);
+      else
+        res.write(data);
+    }, 3000);
+    // Note: Heatbeat for avoidance of client's request timeout of first time (30 sec) 
+   res.write(`:\n\n`);
+   //res.end();
+}
+
 
 exports.post = (req, res, next) => {
    console.log("#########################")

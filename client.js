@@ -7,7 +7,7 @@ const PubNub = require("pubnub");
 
 const readline = require('readline');
 
- 
+
 var rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -42,8 +42,8 @@ function recieveUpdates() {
   }
 
   function onData(stock) {
-    console.log(`${stock.symbol}: ${stock.price}`);
-    console.log(stocks);
+    //console.log(`${stock.symbol}: ${stock.price}`);
+    //console.log(stocks);
     if (stock.symbol in stocks){
       stocks[stock.symbol].push(stock.price);
       if (stocks[stock.symbol].length > 20){
