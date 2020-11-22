@@ -201,7 +201,7 @@
                   text="Atualizar Gráfico"
                   colorBtn="rgba(255,255,255, 0.9)"
                   class="btn-style mt-1"
-                  @click="alertar()"
+                  @click="updateValues()"
                 ></RoundedBtn>
               </div>
             </div>
@@ -241,6 +241,7 @@ export default {
   data() {
     return {
       BAFormValid: false,
+      msgServer: "",
       projecaoRendimentos: false,
       stockName: null,
       stockList: ["Google", "Elerium", "Apple", "Linen Cloth", "Besbin Gas"],
@@ -346,7 +347,7 @@ export default {
           }
         },
         title: {
-          text: "HISTÓRICO DE RENDIMENTOS",
+          text: "VALORES DA AÇÃO",
           align: "left",
           margin: 30,
           x: 38,
@@ -361,20 +362,8 @@ export default {
           enabled: false
         },
         xAxis: {
-          categories: [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
-          ],
+          categories: [],
+          visible: false,
           crosshair: true
         },
         yAxis: {
@@ -396,10 +385,10 @@ export default {
         },
         series: [
           {
-            name: "Máximo",
+            name: "",
             type: "spline",
             marker: {
-              enabled: false,
+              enabled: true,
               symbol: "",
               lineColor: "#FA8D28"
             },
@@ -407,46 +396,7 @@ export default {
               valueSuffix: " %"
             },
             color: "#FA8D28",
-            data: [
-              49.9,
-              71.5,
-              106.4,
-              129.2,
-              144.0,
-              176.0,
-              135.6,
-              148.5,
-              216.4,
-              194.1,
-              95.6,
-              54.4
-            ]
-          },
-          {
-            name: "Rendimento",
-            type: "column",
-            marker: {
-              symbol: "circle",
-              lineColor: "#54D8FF"
-            },
-            color: "#FA973B99",
-            tooltip: {
-              valuePrefix: "R$"
-            },
-            data: [
-              49.9,
-              71.5,
-              106.4,
-              129.2,
-              144.0,
-              176.0,
-              135.6,
-              148.5,
-              216.4,
-              194.1,
-              95.6,
-              54.4
-            ]
+            data: []
           }
         ]
       }
@@ -481,6 +431,40 @@ export default {
       default: false
     }
   },
+  mounted() {
+    (async () => {
+      try {
+        // Store SSE object at a higher scope
+        this.msgServer = await this.$sse(
+          "http://localhost:3000/stocks/events",
+          {
+            format: "plain"
+          }
+        ); // omit for no format pre-processing
+
+        // Listen for messages without a specified event
+        this.msgServer.subscribe("", (data, rawEvent) => {
+          console.log("alo", data, rawEvent);
+          //console.warn("Received a message w/o an event!", data);
+        });
+
+        // Listen for messages based on their event (in this case, "chat")
+        this.msgServer.subscribe("message", (message, rawEvent) => {
+          console.log("alo", message, rawEvent);
+          //this.messages.push(message);
+        });
+      } catch (err) {
+        // When this error is caught, it means the initial connection to the
+        // events server failed.  No automatic attempts to reconnect will be made.
+        console.error("Failed to connect to server", err);
+      }
+    })();
+  },
+  beforeDestroy() {
+    // Make sure to close the connection with the events server
+    // when the component is destroyed, or we'll have ghost connections!
+    this.msgServer.close();
+  },
   methods: {
     ...mapMutations(["SET_EXPANDEDDRAWER"]),
     ...mapActions(["sendNotification", "requestValues"]),
@@ -504,16 +488,34 @@ export default {
       this.$refs.BAForm.validate();
       if (this.stockName && this.stockOperation && this.stockValue) {
         const res = await this.sendNotification({
+          userID: 1,
           stockID: this.stockName,
           targetPrice: this.stockValue,
           operations: this.stockOperation
         });
-        console.log(res);
         if (res.status === 200) {
-          console.log("valores");
-          const values = await this.requestValues();
-          console.log(values);
+          alert("Agora, clique no botão atualizar valores");
         }
+      }
+    },
+    updateValues: async function() {
+      const res = await this.requestValues();
+      this.rendimentos.series = [];
+      for (var stock in res) {
+        this.rendimentos.series.push({
+          name: stock,
+          type: "spline",
+          marker: {
+            enabled: true,
+            symbol: "",
+            lineColor: "#FA8D28"
+          },
+          tooltip: {
+            valueSuffix: " US$"
+          },
+          color: "#FA8D28",
+          data: res[stock]
+        });
       }
     }
   }
