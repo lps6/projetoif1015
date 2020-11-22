@@ -9,7 +9,7 @@ exports.eventHandler = (req, res, next) => {
   // Mandatory headers and http status to keep connection open
   const headers = {
     "Content-Type": "text/event-stream",
-    Connection: "keep-alive",
+    "Connection": "keep-alive",
     "Cache-Control": "no-cache",
     "X-Accel-Buffering": "no"
   };
