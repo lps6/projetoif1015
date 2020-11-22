@@ -9,11 +9,13 @@ import VueTheMask from "vue-the-mask";
 import Highcharts from "highcharts";
 import HighchartsVue from "highcharts-vue";
 import exportingInit from "highcharts/modules/exporting";
+import VueSSE from "vue-sse";
 
 Vue.config.productionTip = false;
 
 Vue.use(VueTheMask);
 Vue.use(HighchartsVue);
+Vue.use(VueSSE);
 exportingInit(Highcharts);
 
 Vue.use(VueMq, {
