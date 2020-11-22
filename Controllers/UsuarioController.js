@@ -30,7 +30,7 @@ exports.eventHandler = (req, res, next) => {
       }
     else{
       console.log("#########" + data + "#########");
-       res.write(toString(data))
+       res.write(data)
     }
   }, 3000);
   // Note: Heatbeat for avoidance of client's request timeout of first time (30 sec)
