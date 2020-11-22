@@ -1,5 +1,6 @@
 const { getLastPrice } = require("../client");
 const { updateTargetPrice } = require("../client");
+const {notifyUser} = require("../client");
 const { CustomObject } = require("../client");
 
 exports.eventHandler = (req, res, next) => {
@@ -13,19 +14,19 @@ exports.eventHandler = (req, res, next) => {
   res.writeHead(200, headers);
 
   let intervalId = setInterval(function () {
-    var lastPrice = getLastPrice();
-    var message = [];
-    message = lastPrice["Google"].toString().split(",");
+    var notification = notifyUser();
+    //var message = [];
+    //message = lastPrice["Google"].toString().split(",");
   // Mandatory headers and http status to keep connection open
     console.log(`*** Interval loop."`);
     // Creates sending data:
-    data = JSON.stringify(lastPrice);
+    data = JSON.stringify(notification);
     console.log("#########" + data + "#########");
     // Note:
     // For avoidance of client's request timeout,
     // you should send a heartbeat data like ':\n\n' (means "comment") at least every 55 sec (30 sec for first time request)
     // even if you have no sending data:
-    if (!data) res.write(`:\n\n`);
+    if (typeof(data) == undefined) res.write(`:\n\n`);
     else res.write(data);
   }, 3000);
   // Note: Heatbeat for avoidance of client's request timeout of first time (30 sec)
