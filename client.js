@@ -51,10 +51,15 @@ function checkPrice(symbol, price, list){
   if (list[1] == "compra"){
     if (price <= list[0]){
       notification.push([symbol, price, "compra"])
+      notifications[symbol].shift()
+      notifications[symbol].shift()
     }}
   else{
     if (price >= list[0]){
       notification.push([symbol, price, "venda"])
+      notifications[symbol].shift()
+      notifications[symbol].shift()
+
   }
 
   }}
