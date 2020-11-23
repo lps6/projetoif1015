@@ -17,6 +17,7 @@
     "vue": "^2.6.11",
     "vue-mq": "^1.0.1",
     "vue-router": "^3.1.5",
+    "vue-simple-alert": "^1.1.1",
     "vue-slick-carousel": "^1.0.5",
     "vue-the-mask": "^0.11.1",
     "vuetify": "^2.2.19",

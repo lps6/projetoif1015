@@ -435,24 +435,12 @@ export default {
     (async () => {
       try {
         // Store SSE object at a higher scope
-        this.msgServer = await this.$sse(
-          "http://localhost:3000/stocks/events",
-          {
-            format: "plain"
-          }
-        ); // omit for no format pre-processing
-
-        // Listen for messages without a specified event
-        this.msgServer.subscribe("", (data, rawEvent) => {
-          console.log("alo", data, rawEvent);
-          //console.warn("Received a message w/o an event!", data);
-        });
-
-        // Listen for messages based on their event (in this case, "chat")
-        this.msgServer.subscribe("message", (message, rawEvent) => {
-          console.log("alo", message, rawEvent);
-          //this.messages.push(message);
-        });
+        let es = new EventSource("http://localhost:3000/stocks/events");
+        es.onmessage = e => {
+          console.log("event", e);
+          var data = e.data.split(",");
+          this.$alert("Sua ação " + data[0] + "está disponivel para" + data[2]);
+        };
       } catch (err) {
         // When this error is caught, it means the initial connection to the
         // events server failed.  No automatic attempts to reconnect will be made.

@@ -10,9 +10,11 @@ import Highcharts from "highcharts";
 import HighchartsVue from "highcharts-vue";
 import exportingInit from "highcharts/modules/exporting";
 import VueSSE from "vue-sse";
+import VueSimpleAlert from "vue-simple-alert";
 
 Vue.config.productionTip = false;
 
+Vue.use(VueSimpleAlert);
 Vue.use(VueTheMask);
 Vue.use(HighchartsVue);
 Vue.use(VueSSE);
