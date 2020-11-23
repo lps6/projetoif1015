@@ -29,11 +29,10 @@ exports.eventHandler = (req, res, next) => {
        res.write(`:\n\n`)
       }
     else{
-       res.write(data)
-       console.log("#########" + data + "#########");
-
+      console.log("#########" + data + "#########");
+       res.write("data:" + data)
     }
-  }, 3000);
+  }, 5000);
   // Note: Heatbeat for avoidance of client's request timeout of first time (30 sec)
   res.write(`:\n\n`);
   //res.end();
